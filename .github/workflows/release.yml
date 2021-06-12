@@ -1,0 +1,103 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+env:
+  BUILD_TYPE: Release
+  BUILD_TARGET: SiliconParser
+
+jobs:
+  release:
+    name: Create Release
+
+    runs-on: ubuntu-latest
+
+    outputs:
+      upload_url: ${{ steps.create_release.outputs.upload_url }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Changelog
+        id: changelog
+        uses: ardalanamini/auto-changelog@v1.0.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: ${{ github.ref }}
+          body: |
+            ${{ steps.changelog.outputs.changelog }}
+
+  build:
+    name: Build Release Assets
+
+    needs: release
+
+    strategy:
+      matrix:
+        os:
+          - ubuntu-20.04
+          - ubuntu-18.04
+          #- macos-latest
+          #- windows-latest
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install Bison
+        run: wget http://ftp.gnu.org/gnu/bison/bison-3.5.4.tar.gz
+          && tar -zxvf bison-3.5.4.tar.gz
+          && cd bison-3.5.4
+          && ./configure
+          && make
+          && sudo make install
+
+      - name: Install RE2C
+        run: wget https://github.com/skvadrik/re2c/releases/download/2.0.3/re2c-2.0.3.tar.xz
+          && tar -xvf re2c-2.0.3.tar.xz
+          && cd re2c-2.0.3
+          && cmake .
+          && cmake --build .
+          && sudo cmake --install .
+
+      - name: Configure CMake
+        run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -G "CodeBlocks - Unix Makefiles"
+
+      - name: Build
+        run: cmake --build ${{github.workspace}}/build --target ${{env.BUILD_TARGET}} --config ${{env.BUILD_TYPE}}
+
+      - name: Test
+        working-directory: ${{github.workspace}}/build
+        run: ctest -C ${{env.BUILD_TYPE}}
+
+      - name: Make Artifact
+        run: mkdir -p silicon-parser/lib
+          && cp build/libSiliconParser.a silicon-parser/lib/libSiliconParser.a
+          && cp -r include silicon-parser/include
+          && cp build/include/silicon/parser/location.hh silicon-parser/include/silicon/parser/location.hh
+          && cp build/include/silicon/parser/BisonParser.h silicon-parser/include/silicon/parser/BisonParser.h
+
+      - name: Compress Release Asset
+        run: tar -czvf ${{ runner.workspace }}/silicon-parser.tar.gz silicon-parser
+
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.release.outputs.upload_url }}
+          asset_path: ${{ runner.workspace }}/silicon-parser.tar.gz
+          asset_name: silicon-parser_${{ matrix.os }}.tar.gz
+          asset_content_type: application/tar+gzip
