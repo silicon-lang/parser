@@ -1,5 +1,10 @@
 # Silicon Parser
 
+[![Build][BUILD_BADGE]][BUILD_URL]
+[![Latest release][RELEASE_BADGE]][RELEASE_URL]
+[![Downloads][DOWNLOADS_BADGE]][RELEASE_URL]
+[![LICENSE][LICENSE_BADGE]](LICENSE)
+
 Silicon Programming Language Parser
 
 ## Table of Contents
@@ -23,6 +28,18 @@ project.
 ## License
 
 This project is licensed under the Apache License 2.0. See the [LICENSE](LICENSE) file for more details.
+
+[BUILD_BADGE]: https://github.com/silicon-lang/parser/actions/workflows/build.yml/badge.svg
+
+[BUILD_URL]: https://github.com/silicon-lang/parser/actions/workflows/build.yml
+
+[RELEASE_BADGE]: https://img.shields.io/github/v/release/silicon-lang/parser
+
+[RELEASE_URL]: https://github.com/silicon-lang/parser/releases/latest
+
+[DOWNLOADS_BADGE]: https://img.shields.io/github/downloads/silicon-lang/parser/latest/total
+
+[LICENSE_BADGE]: https://img.shields.io/github/license/silicon-lang/parser
 
 [BISON_WEBSITE]: https://www.gnu.org/software/bison
 
