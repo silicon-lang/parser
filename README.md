@@ -15,8 +15,8 @@ Silicon Programming Language Parser
 
 ## Prerequisites
 
-- [Bison][BISON_WEBSITE] (v3.5) - [source][BISON_SOURCE]
-- [RE2C][RE2C_WEBSITE] (v2.0) - [source][RE2C_SOURCE]
+- [Bison][BISON_WEBSITE] (v3.8) - [source][BISON_SOURCE]
+- [RE2C][RE2C_WEBSITE] (v2.2) - [source][RE2C_SOURCE]
 
 ## Authors
 
