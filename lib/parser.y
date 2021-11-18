@@ -340,7 +340,7 @@ binary_operation
 | value NOT_EQUAL value { $$ = ctx.def_op(silicon::parser::AST::binary_operation_t::NOT_EQUAL, $1, $3); }
 | value BIGGER_EQUAL value { $$ = ctx.def_op(silicon::parser::AST::binary_operation_t::BIGGER_EQUAL, $1, $3); }
 | value BIGGER value { $$ = ctx.def_op(silicon::parser::AST::binary_operation_t::BIGGER, $1, $3); }
-//| value AS type { $$ = ctx.def_op(silicon::parser::AST::binary_operation_t::CAST, $1, $3); }
+| value AS type { $$ = ctx.def_op(silicon::parser::AST::binary_operation_t::CAST, $1, $3); }
 ;
 
 unary_operation
