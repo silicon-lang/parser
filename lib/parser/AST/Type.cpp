@@ -15,27 +15,17 @@
 //
 
 
-#ifndef SILICONPARSER_VARIABLEDEFINITION_H
-#define SILICONPARSER_VARIABLEDEFINITION_H
+#include <utility>
+#include "silicon/parser/AST/Type.h"
+#include "macros.h"
 
 
-#include <string>
-#include "Node.h"
+using namespace std;
+using namespace silicon::parser::AST;
 
 
-namespace silicon::parser::AST {
+Type::Type(const string &location, string name) : Node{location}, name(MOVE(name)) {}
 
-    class VariableDefinition : public Node {
-    public:
-        std::string name;
-        Node *type;
-
-        VariableDefinition(const std::string &location, std::string name, Node *type);
-
-        node_t node_type() override;
-    };
-
+node_t Type::node_type() {
+    return node_t::TYPE;
 }
-
-
-#endif //SILICONPARSER_VARIABLEDEFINITION_H

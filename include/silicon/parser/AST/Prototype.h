@@ -30,15 +30,15 @@ namespace silicon::parser::AST {
     class Prototype : public Node {
     public:
         std::string name;
-        std::string return_type;
-        std::vector<std::pair<std::string, std::string>> arguments;
+        Node *return_type;
+        std::vector<std::pair<std::string, Node *>> arguments;
 
         bool is_exported = false;
         bool is_extern = false;
         bool is_variadic = false;
 
-        Prototype(const std::string &location, std::string name, std::string return_type,
-                  std::vector<std::pair<std::string, std::string>> arguments);
+        Prototype(const std::string &location, std::string name, Node *return_type,
+                  std::vector<std::pair<std::string, Node *>> arguments);
 
         node_t node_type() override;
 

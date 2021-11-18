@@ -24,9 +24,9 @@ using namespace std;
 using namespace silicon::parser::AST;
 
 
-VariableDefinition::VariableDefinition(const string &location, string name, string type) : Node{location},
-                                                                                           name(MOVE(name)),
-                                                                                           type(MOVE(type)) {}
+VariableDefinition::VariableDefinition(const string &location, string name, Node *type) : Node{location},
+                                                                                          name(MOVE(name)),
+                                                                                          type(type) {}
 
 node_t VariableDefinition::node_type() {
     return node_t::VARIABLE_DEFINITION;

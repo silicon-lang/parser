@@ -54,6 +54,12 @@ Node *Context::def_code_block(vector<Node *> statements) {
     CREATE_NODE(CodeBlock, MOVE(statements))
 }
 
+/* ------------------------- AST -> Types ------------------------- */
+
+Node *Context::def_type(string name) {
+    CREATE_NODE(Type, MOVE(name))
+}
+
 /* ------------------------- AST -> Literals ------------------------- */
 
 Node *Context::def_bool(bool value) {
@@ -70,7 +76,7 @@ Node *Context::def_plain_object(map<string, Node *> properties) {
     CREATE_NODE(PlainObject, MOVE(properties))
 }
 
-Node *Context::def_interface(string name, vector<pair<string, string>> properties, vector<string> bases) {
+Node *Context::def_interface(string name, vector<pair<string, Node *>> properties, vector<string> bases) {
     CREATE_NODE(Interface, MOVE(name), MOVE(bases), MOVE(properties))
 }
 
@@ -80,7 +86,7 @@ Node *Context::def_variable(string name, Node *context) {
     CREATE_NODE(Variable, MOVE(name), MOVE(context))
 }
 
-Node *Context::def_variable_definition(string name, string type) {
+Node *Context::def_variable_definition(string name, Node *type) {
     CREATE_NODE(VariableDefinition, MOVE(name), MOVE(type))
 }
 
@@ -125,12 +131,12 @@ Node *Context::def_for(Node *definition, Node *condition, Node *stepper,
 
 /* ------------------------- AST -> Function ------------------------- */
 
-pair<string, string> Context::def_arg(string name, string type) {
-    return make_pair(MOVE(name), MOVE(type));
+pair<string, Node *> Context::def_arg(string name, Node *type) {
+    return make_pair(MOVE(name), type);
 }
 
-Node *Context::def_prototype(string name, vector<pair<string, string>> arguments, string return_type) {
-    CREATE_NODE(Prototype, MOVE(name), MOVE(return_type), MOVE(arguments))
+Node *Context::def_prototype(string name, vector<pair<string, Node *>> arguments, Node *return_type) {
+    CREATE_NODE(Prototype, MOVE(name), return_type, MOVE(arguments))
 }
 
 Node *Context::def_return(Node *value) {

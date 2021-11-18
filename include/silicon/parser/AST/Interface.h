@@ -31,10 +31,10 @@ namespace silicon::parser::AST {
     public:
         std::string name;
         std::vector<std::string> bases;
-        std::vector<std::pair<std::string, std::string>> properties;
+        std::vector<std::pair<std::string, Node *>> properties;
 
         Interface(const std::string &location, std::string name, std::vector<std::string> bases,
-                  std::vector<std::pair<std::string, std::string>> properties);
+                  std::vector<std::pair<std::string, Node *>> properties);
 
         node_t node_type() override;
     };

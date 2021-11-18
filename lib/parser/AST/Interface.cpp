@@ -24,7 +24,7 @@ using namespace std;
 using namespace silicon::parser::AST;
 
 
-Interface::Interface(const string &location, string name, vector<string> bases, vector<pair<string, string>> properties)
+Interface::Interface(const string &location, string name, vector<string> bases, vector<pair<string, Node *>> properties)
         : Node{location}, name(MOVE(name)), bases(MOVE(bases)), properties(MOVE(properties)) {}
 
 node_t Interface::node_type() {

@@ -156,8 +156,6 @@ Parser::symbol_type yylex(silicon::parser::Context &ctx);
 // Types
 // --------------------------------------------------
 
-%type<std::string> type
-
 %type<std::vector<silicon::parser::AST::Node *>>
  global_statements statements statement arguments arguments_ variable_definitions
 
@@ -165,18 +163,19 @@ Parser::symbol_type yylex(silicon::parser::Context &ctx);
  global_statement export_statement extern_statement if_statement expression value value_ operation binary_operation
  unary_operation variable_definition variable_definition_ literal plain_object function_call inline_if
  interface_definition function_definition function_declaration variadic_function_declaration if_statement_
- loop_statement while_statement do_while_statement for_statement scope
+ loop_statement while_statement do_while_statement for_statement scope type
 
-%type<std::vector<std::pair<std::string, std::string>>>
- arguments_definition arguments_definition_ interface_properties variadic_arguments_declaration variadic_arguments_declaration_
+%type<std::vector<std::pair<std::string, silicon::parser::AST::Node *>>>
+ arguments_definition arguments_definition_ variadic_arguments_declaration variadic_arguments_declaration_ interface_properties
 
-%type<std::pair<std::string, std::string>> interface_property
+%type<std::pair<std::string, silicon::parser::AST::Node *>>
+ interface_property object_property
 
-%type<std::map<std::string, silicon::parser::AST::Node *>> object_properties object_properties_
+%type<std::map<std::string, silicon::parser::AST::Node *>>
+ object_properties object_properties_
 
-%type<std::pair<std::string, silicon::parser::AST::Node *>> object_property
-
-%type<std::vector<std::string>> interface_parents
+%type<std::vector<std::string>>
+ interface_parents
 
 // --------------------------------------------------
 // Precedences
@@ -556,7 +555,7 @@ literal
 // --------------------------------------------------
 
 type
-: IDENTIFIER { $$ = $1; }
+: IDENTIFIER { $$ = ctx.def_type($1); }
 ;
 
 %%

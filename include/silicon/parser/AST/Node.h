@@ -27,6 +27,8 @@ namespace silicon::parser::AST {
     enum class node_t {
         NODE,
 
+        TYPE,
+
         INTERFACE,
 
         CODE_BLOCK,

@@ -24,8 +24,8 @@ using namespace std;
 using namespace silicon::parser::AST;
 
 
-Prototype::Prototype(const string &location, string name, string return_type, vector<pair<string, string>> arguments)
-        : Node{location}, name(MOVE(name)), return_type(MOVE(return_type)), arguments(MOVE(arguments)) {}
+Prototype::Prototype(const string &location, string name, Node *return_type, vector<pair<string, Node *>> arguments)
+        : Node{location}, name(MOVE(name)), return_type(return_type), arguments(MOVE(arguments)) {}
 
 node_t Prototype::node_type() {
     return node_t::PROTOTYPE;

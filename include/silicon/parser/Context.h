@@ -24,6 +24,7 @@
 #include <string>
 #include <vector>
 #include "silicon/parser/AST/Node.h"
+#include "silicon/parser/AST/Type.h"
 #include "silicon/parser/AST/CodeBlock.h"
 #include "silicon/parser/AST/BooleanLiteral.h"
 #include "silicon/parser/AST/NumberLiteral.h"
@@ -72,6 +73,10 @@ namespace silicon::parser {
 
         AST::Node *def_code_block(std::vector<AST::Node *> statements = {});
 
+        /* ------------------------- AST -> Types ------------------------- */
+
+        AST::Node *def_type(std::string name);
+
         /* ------------------------- AST -> Literals ------------------------- */
 
         AST::Node *def_bool(bool value);
@@ -83,14 +88,14 @@ namespace silicon::parser {
         AST::Node *def_plain_object(std::map<std::string, AST::Node *> properties);
 
         AST::Node *
-        def_interface(std::string name, std::vector<std::pair<std::string, std::string>> properties,
+        def_interface(std::string name, std::vector<std::pair<std::string, AST::Node *>> properties,
                       std::vector<std::string> bases = {});
 
         /* ------------------------- AST -> Variable & Constant ------------------------- */
 
         AST::Node *def_variable(std::string name, AST::Node *context = nullptr);
 
-        AST::Node *def_variable_definition(std::string name, std::string type);
+        AST::Node *def_variable_definition(std::string name, AST::Node *type);
 
         /* ------------------------- AST -> Operations ------------------------- */
 
@@ -119,10 +124,10 @@ namespace silicon::parser {
 
         /* ------------------------- AST -> Function ------------------------- */
 
-        static std::pair<std::string, std::string> def_arg(std::string name, std::string type);
+        static std::pair<std::string, AST::Node *> def_arg(std::string name, AST::Node *type);
 
-        AST::Node *def_prototype(std::string name, std::vector<std::pair<std::string, std::string>> arguments,
-                                 std::string return_type);
+        AST::Node *def_prototype(std::string name, std::vector<std::pair<std::string, AST::Node *>> arguments,
+                                 AST::Node *return_type);
 
         AST::Node *def_return(AST::Node * = nullptr);
 
