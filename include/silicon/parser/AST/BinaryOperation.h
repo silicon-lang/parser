@@ -50,13 +50,15 @@ namespace silicon::parser::AST {
         CAST,
     };
 
-    class BinaryOperation : public Node {
+    class BinaryOperation : virtual public Node {
     public:
         binary_operation_t op;
         Node *left;
         Node *right;
 
         BinaryOperation(const std::string &location, binary_operation_t op, Node *left, Node *right);
+
+        explicit BinaryOperation(BinaryOperation *node);
 
         node_t node_type() override;
     };

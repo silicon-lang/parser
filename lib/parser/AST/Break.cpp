@@ -24,6 +24,8 @@ using namespace silicon::parser::AST;
 
 Break::Break(const string &location) : Node{location} {}
 
+Break::Break(Break *node) : Break{node->location} {}
+
 node_t Break::node_type() {
     return node_t::BREAK;
 }

@@ -35,13 +35,15 @@ namespace silicon::parser::AST {
         AND,
     };
 
-    class UnaryOperation : public Node {
+    class UnaryOperation : virtual public Node {
     public:
         unary_operation_t op;
         Node *node;
         bool suffix;
 
         UnaryOperation(const std::string &location, unary_operation_t op, Node *node, bool suffix = false);
+
+        explicit UnaryOperation(UnaryOperation *node);
 
         node_t node_type() override;
     };

@@ -28,6 +28,8 @@ If::If(const string &location, Node *condition, Node *then_statements, Node *els
         location}, condition(MOVE(condition)), then_statements(MOVE(then_statements)), else_statements(
         MOVE(else_statements)) {}
 
+If::If(If *node) : If{node->location, node->condition, node->then_statements, node->else_statements} {}
+
 node_t If::node_type() {
     return node_t::IF;
 }

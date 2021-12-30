@@ -27,6 +27,8 @@ using namespace silicon::parser::AST;
 PlainObject::PlainObject(const string &location, map<string, Node *> properties) : Node{location},
                                                                                    properties(MOVE(properties)) {}
 
+PlainObject::PlainObject(PlainObject *node) : PlainObject{node->location, node->properties} {}
+
 node_t PlainObject::node_type() {
     return node_t::PLAIN_OBJECT;
 }

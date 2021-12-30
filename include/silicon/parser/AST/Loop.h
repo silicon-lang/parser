@@ -25,11 +25,13 @@
 
 namespace silicon::parser::AST {
 
-    class Loop : public Node {
+    class Loop : virtual public Node {
     public:
         Node *body;
 
         Loop(const std::string &location, Node *body);
+
+        explicit Loop(Loop *node);
 
         node_t node_type() override;
     };

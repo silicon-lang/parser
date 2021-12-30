@@ -25,11 +25,14 @@
 
 namespace silicon::parser::AST {
 
-    class Function : public Node {
+    class Function : virtual public Node {
     public:
-        std::unique_ptr<Node> prototype, body;
+        Node *prototype;
+        Node *body;
 
         Function(const std::string &location, Node *prototype, Node *body = nullptr);
+
+        explicit Function(Function *node);
 
         node_t node_type() override;
     };

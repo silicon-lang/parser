@@ -22,6 +22,12 @@
 #include <string>
 
 
+namespace silicon::parser {
+
+    class Context;
+
+}
+
 namespace silicon::parser::AST {
 
     enum class node_t {
@@ -69,16 +75,20 @@ namespace silicon::parser::AST {
 
         explicit Node(const std::string &location);
 
+        explicit Node(Node *node);
+
+        void optimize();
+
     public:
         virtual ~Node() = default;
 
         virtual node_t node_type() = 0;
 
-        void optimize();
-
         bool is_node(node_t node_type);
 
         void fail(const std::string &error) noexcept __attribute__ ((__noreturn__));
+
+        friend class silicon::parser::Context;
     };
 
 }

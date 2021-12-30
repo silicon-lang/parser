@@ -15,8 +15,7 @@
 //
 
 
-#include <utility>
-#include "silicon/parser/AST/Loop.h"
+#include "silicon/parser/AST/String.h"
 #include "macros.h"
 
 
@@ -24,10 +23,23 @@ using namespace std;
 using namespace silicon::parser::AST;
 
 
-Loop::Loop(const string &location, Node *body) : Node{location}, body(MOVE(body)) {}
+String::String(const string &location, string value) : Node{location} {
+    REPLACE_ALL(value, "\\t", "\t")
+    REPLACE_ALL(value, "\\v", "\v")
+    REPLACE_ALL(value, "\\0", "\0")
+    REPLACE_ALL(value, "\\b", "\b")
+    REPLACE_ALL(value, "\\f", "\f")
+    REPLACE_ALL(value, "\\n", "\n")
+    REPLACE_ALL(value, "\\r", "\r")
+    REPLACE_ALL(value, "\\'", "\'")
+    REPLACE_ALL(value, "\\\"", "\"")
+    REPLACE_ALL(value, "\\\\", "\\")
 
-Loop::Loop(Loop *node) : Loop{node->location, node->body} {}
+    this->value = value;
+}
 
-node_t Loop::node_type() {
-    return node_t::LOOP;
+String::String(String *node) : String{node->location, node->value} {}
+
+node_t String::node_type() {
+    return node_t::STRING;
 }

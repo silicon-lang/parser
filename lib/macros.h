@@ -23,14 +23,14 @@
 
 #define CREATE_NODE(NODE, ...) auto *new_node = new NODE(parse_location(), ##__VA_ARGS__); \
                                if (should_optimize) new_node->optimize();                  \
-                               return new_node;
+                               return walk(new_node);
 
-#define REPLACE_ALL(STRING, FROM, TO) size_t replace_all_start_pos = 0;                                                                         \
-                                      std::string replace_all_from = FROM;                                                                      \
-                                      std::string replace_all_to = TO;                                                                          \
-                                      while ((replace_all_start_pos = STRING.find(replace_all_from, replace_all_start_pos)) != string::npos) {  \
-                                          STRING.replace(replace_all_start_pos, replace_all_from.length(), replace_all_to);                     \
-                                          replace_all_start_pos += replace_all_to.length();                                                     \
+#define REPLACE_ALL(STRING, FROM, TO) for (                                                                                   \
+                                          size_t replace_all_start_pos = 0;                                                   \
+                                          (replace_all_start_pos = STRING.find(FROM, replace_all_start_pos)) != string::npos; \
+                                          replace_all_start_pos += string(TO).length()                                        \
+                                      ) {                                                                                     \
+                                          STRING.replace(replace_all_start_pos, string(FROM).length(), TO);                   \
                                       }
 
 #endif //SILICONPARSER_MACROS_H

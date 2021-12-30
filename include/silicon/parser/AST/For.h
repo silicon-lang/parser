@@ -25,7 +25,7 @@
 
 namespace silicon::parser::AST {
 
-    class For : public Node {
+    class For : virtual public Node {
     public:
         Node *definition;
         Node *condition;
@@ -33,6 +33,8 @@ namespace silicon::parser::AST {
         Node *body;
 
         For(const std::string &location, Node *definition, Node *condition, Node *stepper, Node *body);
+
+        explicit For(For *node);
 
         node_t node_type() override;
     };

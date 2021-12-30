@@ -25,6 +25,10 @@ using namespace silicon::parser;
 using namespace silicon::parser::AST;
 
 
+Node *default_walker(Node *node) {
+    return node;
+}
+
 Context::Context(string &filename) : filename(filename) {
     location.begin.filename = &filename;
     location.end.filename = &filename;
@@ -44,109 +48,126 @@ void Context::optimize(bool optimize) {
     should_optimize = optimize;
 }
 
+void Context::set_walker(AST::Node *(*w)(Node *)) {
+    walker = w;
+}
+
+AST::Node *Context::walk(Node *node) {
+    if (walker) return walker(node);
+
+    return default_walker(node);
+}
+
 /* ------------------------- AST ------------------------- */
 
-void Context::def_library(vector<Node *> statements) {
+void Context::def_library(vector<AST::Node *> statements) {
     library = def_code_block(MOVE(statements));
 }
 
-Node *Context::def_code_block(vector<Node *> statements) {
+AST::Node *Context::def_code_block(vector<AST::Node *> statements) {
     CREATE_NODE(CodeBlock, MOVE(statements))
 }
 
 /* ------------------------- AST -> Types ------------------------- */
 
-Node *Context::def_type(string name) {
+AST::Node *Context::def_type(string name) {
     CREATE_NODE(Type, MOVE(name))
 }
 
 /* ------------------------- AST -> Literals ------------------------- */
 
-Node *Context::def_bool(bool value) {
+AST::Node *Context::def_bool(bool value) {
     CREATE_NODE(BooleanLiteral, value)
 }
 
-Node *Context::def_num(string value) {
+AST::Node *Context::def_num(string value) {
     CREATE_NODE(NumberLiteral, MOVE(value))
+}
+
+/* ------------------------- AST -> String ------------------------- */
+
+AST::Node *Context::def_string(string value) {
+    CREATE_NODE(String, MOVE(value))
 }
 
 /* ------------------------- AST -> Object & Interface ------------------------- */
 
-Node *Context::def_plain_object(map<string, Node *> properties) {
+AST::Node *Context::def_plain_object(map<string, AST::Node *> properties) {
     CREATE_NODE(PlainObject, MOVE(properties))
 }
 
-Node *Context::def_interface(string name, vector<pair<string, Node *>> properties, vector<string> bases) {
+AST::Node *Context::def_interface(string name, vector<pair<string, AST::Node *>> properties, vector<string> bases) {
     CREATE_NODE(Interface, MOVE(name), MOVE(bases), MOVE(properties))
 }
 
 /* ------------------------- AST -> Variable & Constant ------------------------- */
 
-Node *Context::def_variable(string name, Node *context) {
+AST::Node *Context::def_variable(string name, AST::Node *context) {
     CREATE_NODE(Variable, MOVE(name), MOVE(context))
 }
 
-Node *Context::def_variable_definition(string name, Node *type) {
+AST::Node *Context::def_variable_definition(string name, AST::Node *type) {
     CREATE_NODE(VariableDefinition, MOVE(name), MOVE(type))
 }
 
 /* ------------------------- AST -> Operations ------------------------- */
 
-Node *Context::def_op(binary_operation_t op, Node *left, Node *right) {
+AST::Node *Context::def_op(binary_operation_t op, AST::Node *left, AST::Node *right) {
     CREATE_NODE(BinaryOperation, op, MOVE(left), MOVE(right))
 }
 
-Node *Context::def_op(unary_operation_t op, Node *node, bool suffix) {
+AST::Node *Context::def_op(unary_operation_t op, AST::Node *node, bool suffix) {
     CREATE_NODE(UnaryOperation, op, MOVE(node), suffix)
 }
 
 /* ------------------------- AST -> If ------------------------- */
 
-Node *Context::def_if(Node *condition, Node *then_statements, Node *else_statements) {
+AST::Node *Context::def_if(AST::Node *condition, AST::Node *then_statements, AST::Node *else_statements) {
     CREATE_NODE(If, MOVE(condition), MOVE(then_statements), MOVE(else_statements))
 }
 
 /* ------------------------- AST -> Loops ------------------------- */
 
-Node *Context::def_break() {
+AST::Node *Context::def_break() {
     CREATE_NODE(Break)
 }
 
-Node *Context::def_continue() {
+AST::Node *Context::def_continue() {
     CREATE_NODE(Continue)
 }
 
-Node *Context::def_loop(Node *body) {
+AST::Node *Context::def_loop(AST::Node *body) {
     CREATE_NODE(Loop, MOVE(body))
 }
 
-Node *Context::def_while(Node *condition, Node *body) {
+AST::Node *Context::def_while(AST::Node *condition, AST::Node *body) {
     CREATE_NODE(While, MOVE(condition), MOVE(body))
 }
 
-Node *Context::def_for(Node *definition, Node *condition, Node *stepper,
-                                  Node *body) {
+AST::Node *Context::def_for(AST::Node *definition, AST::Node *condition, AST::Node *stepper,
+                       AST::Node *body) {
     CREATE_NODE(For, MOVE(definition), MOVE(condition), MOVE(stepper), MOVE(body))
 }
 
 /* ------------------------- AST -> Function ------------------------- */
 
-pair<string, Node *> Context::def_arg(string name, Node *type) {
+
+pair<string, AST::Node *> Context::def_arg(string name, AST::Node *type) {
     return make_pair(MOVE(name), type);
 }
 
-Node *Context::def_prototype(string name, vector<pair<string, Node *>> arguments, Node *return_type) {
+AST::Node *Context::def_prototype(string name, vector<pair<string, AST::Node *>> arguments, AST::Node *return_type) {
     CREATE_NODE(Prototype, MOVE(name), return_type, MOVE(arguments))
 }
 
-Node *Context::def_return(Node *value) {
+AST::Node *Context::def_return(AST::Node *value) {
     CREATE_NODE(Return, MOVE(value))
 }
 
-Node *Context::def_fn(Node *prototype, Node *body) {
+AST::Node *Context::def_fn(AST::Node *prototype, AST::Node *body) {
     CREATE_NODE(Function, MOVE(prototype), MOVE(body))
 }
 
-Node *Context::def_fn_call(string callee, vector<Node *> args) {
+AST::Node *Context::def_fn_call(string callee, vector<AST::Node *> args) {
     CREATE_NODE(FunctionCall, MOVE(callee), MOVE(args))
 }

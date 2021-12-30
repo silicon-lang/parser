@@ -24,6 +24,8 @@ using namespace silicon::parser::AST;
 
 BooleanLiteral::BooleanLiteral(const string &location, bool value) : Node{location}, value(value) {}
 
+BooleanLiteral::BooleanLiteral(BooleanLiteral *node) : BooleanLiteral{node->location, node->value} {}
+
 node_t BooleanLiteral::node_type() {
     return node_t::BOOLEAN_LIT;
 }

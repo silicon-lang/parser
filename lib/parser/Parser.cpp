@@ -36,7 +36,9 @@ void Parser::optimize(bool should_optimize) {
     ctx->optimize(should_optimize);
 }
 
-Node *Parser::parse() {
+Node *Parser::parse(Node *(*walker)(Node *)) {
+    ctx->set_walker(walker);
+
     yy::Parser parser(*ctx);
 
     parser.parse();

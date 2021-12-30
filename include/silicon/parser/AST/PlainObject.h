@@ -27,11 +27,13 @@
 
 namespace silicon::parser::AST {
 
-    class PlainObject : public Node {
+    class PlainObject : virtual public Node {
     public:
         std::map<std::string, Node *> properties;
 
         PlainObject(const std::string &location, std::map<std::string, Node *> properties);
+
+        explicit PlainObject(PlainObject *node);
 
         node_t node_type() override;
     };

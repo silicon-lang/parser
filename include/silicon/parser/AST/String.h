@@ -15,19 +15,28 @@
 //
 
 
-#include <utility>
-#include "silicon/parser/AST/Loop.h"
-#include "macros.h"
+#ifndef SILICONPARSER_STRING_H
+#define SILICONPARSER_STRING_H
 
 
-using namespace std;
-using namespace silicon::parser::AST;
+#include <string>
+#include "Node.h"
 
 
-Loop::Loop(const string &location, Node *body) : Node{location}, body(MOVE(body)) {}
+namespace silicon::parser::AST {
 
-Loop::Loop(Loop *node) : Loop{node->location, node->body} {}
+    class String : virtual public Node {
+    public:
+        std::string value;
 
-node_t Loop::node_type() {
-    return node_t::LOOP;
+        String(const std::string &location, std::string value);
+
+        explicit String(String *node);
+
+        node_t node_type() override;
+    };
+
 }
+
+
+#endif //SILICONPARSER_STRING_H

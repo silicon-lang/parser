@@ -79,6 +79,7 @@ Parser::symbol_type yylex(silicon::parser::Context &ctx);
 
 %token <bool> BOOLEAN_LITERAL "Boolean Literal"
 %token <std::string> NUMBER_LITERAL "Number Literal"
+%token <std::string> STRING_LITERAL "String Literal"
 
 // --------------------------------------------------
 // Tokens -> Keywords
@@ -295,6 +296,7 @@ value
 value_
 : value %prec RETURN { $$ = $1; }
 | plain_object { $$ = $1; }
+| STRING_LITERAL { $$ = ctx.def_string($1); }
 ;
 
 // --------------------------------------------------
@@ -360,7 +362,7 @@ unary_operation
 // --------------------------------------------------
 
 export_statement
-: EXPORT function_definition { $$ = $2; ((silicon::parser::AST::Prototype *) $$)->make_exported(); }
+: EXPORT function_definition { $$ = $2; dynamic_cast<silicon::parser::AST::Prototype *>($$)->make_exported(); }
 ;
 
 // --------------------------------------------------
@@ -368,8 +370,8 @@ export_statement
 // --------------------------------------------------
 
 extern_statement
-: EXTERN function_declaration SEMICOLON { $$ = $2; ((silicon::parser::AST::Prototype *) $$)->make_extern(); }
-| EXTERN variadic_function_declaration SEMICOLON { $$ = $2; ((silicon::parser::AST::Prototype *) $$)->make_extern(); }
+: EXTERN function_declaration SEMICOLON { $$ = $2; dynamic_cast<silicon::parser::AST::Prototype *>($$)->make_extern(); }
+| EXTERN variadic_function_declaration SEMICOLON { $$ = $2; dynamic_cast<silicon::parser::AST::Prototype *>($$)->make_extern(); }
 ;
 
 // --------------------------------------------------
@@ -389,7 +391,7 @@ while_statement
 ;
 
 do_while_statement
-: DO scope WHILE OPEN_PAREN value CLOSE_PAREN SEMICOLON { $$ = ctx.def_while($5, $2); ((silicon::parser::AST::While *) $$)->make_do_while(); }
+: DO scope WHILE OPEN_PAREN value CLOSE_PAREN SEMICOLON { $$ = ctx.def_while($5, $2); dynamic_cast<silicon::parser::AST::While *>($$)->make_do_while(); }
 ;
 
 // --------------------------------------------------
@@ -406,8 +408,8 @@ for_statement
 
 if_statement
 : if_statement_ { $$ = $1; }
-| if_statement_ ELSE scope { $$ = $1; ((silicon::parser::AST::If *) $$)->set_else($3); }
-| if_statement_ ELSE if_statement { $$ = $1; ((silicon::parser::AST::If *) $$)->set_else($3); }
+| if_statement_ ELSE scope { $$ = $1; dynamic_cast<silicon::parser::AST::If *>($$)->set_else($3); }
+| if_statement_ ELSE if_statement { $$ = $1; dynamic_cast<silicon::parser::AST::If *>($$)->set_else($3); }
 ;
 
 if_statement_
@@ -415,7 +417,7 @@ if_statement_
 ;
 
 inline_if
-: value QUESTION_MARK value_ COLON value_ { $$ = ctx.def_if($1, $3, $5); ((silicon::parser::AST::If *) $$)->make_inline(); }
+: value QUESTION_MARK value_ COLON value_ { $$ = ctx.def_if($1, $3, $5); dynamic_cast<silicon::parser::AST::If *>($$)->make_inline(); }
 ;
 
 // --------------------------------------------------
@@ -475,8 +477,8 @@ function_declaration
 ;
 
 variadic_function_declaration
-: FUNCTION IDENTIFIER OPEN_PAREN variadic_arguments_declaration CLOSE_PAREN COLON type { $$ = ctx.def_prototype($2, $4, $7); ((silicon::parser::AST::Prototype *) $$)->make_variadic(); }
-//| FUNCTION IDENTIFIER OPEN_PAREN variadic_arguments_declaration CLOSE_PAREN { $$ = ctx.def_prototype($2, $4); ((silicon::parser::AST::Prototype *) $$)->make_variadic(); }
+: FUNCTION IDENTIFIER OPEN_PAREN variadic_arguments_declaration CLOSE_PAREN COLON type { $$ = ctx.def_prototype($2, $4, $7); dynamic_cast<silicon::parser::AST::Prototype *>($$)->make_variadic(); }
+//| FUNCTION IDENTIFIER OPEN_PAREN variadic_arguments_declaration CLOSE_PAREN { $$ = ctx.def_prototype($2, $4); dynamic_cast<silicon::parser::AST::Prototype *>($$)->make_variadic(); }
 ;
 
 function_call
@@ -599,6 +601,7 @@ re2c:define:YYMARKER = "ctx.cursor";
 [0-9]* [\.] [0-9]+ ("_" [0-9]+)* { return s(Parser::make_NUMBER_LITERAL, std::string(anchor, ctx.cursor)); }
 [0-9]+ ("_" [0-9]+)* [\.] [0-9]+ ("_" [0-9]+)* { return s(Parser::make_NUMBER_LITERAL, std::string(anchor, ctx.cursor)); }
 [0-9]+ ("_" [0-9]+)* { return s(Parser::make_NUMBER_LITERAL, std::string(anchor, ctx.cursor)); }
+"\"" ("\\".|[^"\\])* "\"" { return s(Parser::make_STRING_LITERAL, std::string(anchor + 1, ctx.cursor - 1)); }
 
 // Tokens -> Keywords
 

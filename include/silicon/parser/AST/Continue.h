@@ -24,9 +24,11 @@
 
 namespace silicon::parser::AST {
 
-    class Continue : public Node {
+    class Continue : virtual public Node {
     public:
         explicit Continue(const std::string &location);
+
+        explicit Continue(Continue *node);
 
         node_t node_type() override;
     };

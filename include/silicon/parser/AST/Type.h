@@ -24,11 +24,13 @@
 
 namespace silicon::parser::AST {
 
-    class Type : public Node {
+    class Type : virtual public Node {
     public:
         std::string name;
 
         explicit Type(const std::string &location, std::string name);
+
+        explicit Type(Type *node);
 
         node_t node_type() override;
     };

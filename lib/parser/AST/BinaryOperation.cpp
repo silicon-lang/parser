@@ -26,6 +26,9 @@ using namespace silicon::parser::AST;
 BinaryOperation::BinaryOperation(const string &location, binary_operation_t op, Node *left, Node *right) : Node{
         location}, op(op), left(MOVE(left)), right(MOVE(right)) {}
 
+BinaryOperation::BinaryOperation(BinaryOperation *node) : BinaryOperation{node->location, node->op, node->left,
+                                                                          node->right} {}
+
 node_t BinaryOperation::node_type() {
     return node_t::BINARY_OP;
 }

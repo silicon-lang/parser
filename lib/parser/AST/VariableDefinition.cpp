@@ -28,6 +28,8 @@ VariableDefinition::VariableDefinition(const string &location, string name, Node
                                                                                           name(MOVE(name)),
                                                                                           type(type) {}
 
+VariableDefinition::VariableDefinition(VariableDefinition *node) : VariableDefinition{node->location, node->name, node->type} {}
+
 node_t VariableDefinition::node_type() {
     return node_t::VARIABLE_DEFINITION;
 }

@@ -27,7 +27,7 @@
 
 namespace silicon::parser::AST {
 
-    class Interface : public Node {
+    class Interface : virtual public Node {
     public:
         std::string name;
         std::vector<std::string> bases;
@@ -35,6 +35,8 @@ namespace silicon::parser::AST {
 
         Interface(const std::string &location, std::string name, std::vector<std::string> bases,
                   std::vector<std::pair<std::string, Node *>> properties);
+
+        explicit Interface(Interface *node);
 
         node_t node_type() override;
     };

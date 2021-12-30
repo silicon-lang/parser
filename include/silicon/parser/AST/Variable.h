@@ -26,12 +26,14 @@
 
 namespace silicon::parser::AST {
 
-    class Variable : public Node {
+    class Variable : virtual public Node {
     public:
         std::string name;
         Node *context;
 
         Variable(const std::string &location, std::string name, Node *context);
+
+        explicit Variable(Variable *node);
 
         node_t node_type() override;
     };

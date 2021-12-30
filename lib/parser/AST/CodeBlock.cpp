@@ -26,6 +26,8 @@ using namespace silicon::parser::AST;
 CodeBlock::CodeBlock(const string &location, vector<Node *> statements) : Node{location}, statements(MOVE(statements)) {
 }
 
+CodeBlock::CodeBlock(CodeBlock *node) : CodeBlock{node->location, node->statements} {}
+
 node_t CodeBlock::node_type() {
     return node_t::CODE_BLOCK;
 }

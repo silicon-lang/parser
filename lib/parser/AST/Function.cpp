@@ -23,8 +23,10 @@ using namespace std;
 using namespace silicon::parser::AST;
 
 
-Function::Function(const string &location, Node *prototype, Node *body) : Node{location}, prototype(MOVE(prototype)),
-                                                                          body(MOVE(body)) {}
+Function::Function(const string &location, Node *prototype, Node *body) : Node{location}, prototype(prototype),
+                                                                          body(body) {}
+
+Function::Function(Function *node) : Function{node->location, node->prototype, node->body} {}
 
 node_t Function::node_type() {
     return node_t::FUNCTION;

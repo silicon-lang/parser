@@ -28,6 +28,8 @@ FunctionCall::FunctionCall(const string &location, string callee, vector<Node *>
                                                                                          callee(MOVE(callee)),
                                                                                          args(MOVE(args)) {}
 
+FunctionCall::FunctionCall(FunctionCall *node) : FunctionCall{node->location, node->callee, node->args} {}
+
 node_t FunctionCall::node_type() {
     return node_t::FUNCTION_CALL;
 }

@@ -25,11 +25,13 @@
 
 namespace silicon::parser::AST {
 
-    class BooleanLiteral : public Node {
+    class BooleanLiteral : virtual public Node {
     public:
         bool value;
 
         BooleanLiteral(const std::string &location, bool value);
+
+        explicit BooleanLiteral(BooleanLiteral *node);
 
         node_t node_type() override;
     };

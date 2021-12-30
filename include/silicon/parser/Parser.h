@@ -38,7 +38,7 @@ namespace silicon::parser {
 
         void optimize(bool should_optimize = true);
 
-        AST::Node *parse();
+        AST::Node *parse(AST::Node *(*walker)(AST::Node *) = nullptr);
     };
 
 }

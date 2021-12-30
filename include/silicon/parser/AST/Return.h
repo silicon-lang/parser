@@ -26,11 +26,13 @@
 
 namespace silicon::parser::AST {
 
-    class Return : public Node {
+    class Return : virtual public Node {
     public:
         Node *value;
 
         Return(const std::string &location, Node *value);
+
+        explicit Return(Return *node);
 
         node_t node_type() override;
     };

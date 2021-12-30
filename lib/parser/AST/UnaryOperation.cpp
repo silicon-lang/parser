@@ -28,6 +28,8 @@ UnaryOperation::UnaryOperation(const string &location, unary_operation_t op, Nod
                                                                                                         node(MOVE(node)),
                                                                                                         suffix(suffix) {}
 
+UnaryOperation::UnaryOperation(UnaryOperation *node) : UnaryOperation{node->location, node->op, node->node, node->suffix} {}
+
 node_t UnaryOperation::node_type() {
     return node_t::UNARY_OP;
 }

@@ -25,7 +25,7 @@
 
 namespace silicon::parser::AST {
 
-    class While : public Node {
+    class While : virtual public Node {
     public:
         Node *condition;
         Node *body;
@@ -33,6 +33,8 @@ namespace silicon::parser::AST {
         bool is_do_while = false;
 
         While(const std::string &location, Node *condition, Node *body);
+
+        explicit While(While *node);
 
         node_t node_type() override;
 

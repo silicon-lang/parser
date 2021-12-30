@@ -27,6 +27,8 @@ using namespace silicon::parser::AST;
 While::While(const string &location, Node *condition, Node *body) : Node{location}, condition(MOVE(condition)),
                                                                     body(MOVE(body)) {}
 
+While::While(While *node) : While{node->location, node->condition, node->body} {}
+
 node_t While::node_type() {
     return node_t::WHILE;
 }

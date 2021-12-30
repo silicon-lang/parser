@@ -27,11 +27,13 @@
 
 namespace silicon::parser::AST {
 
-    class CodeBlock : public Node {
+    class CodeBlock : virtual public Node {
     public:
         std::vector<Node *> statements;
 
         explicit CodeBlock(const std::string &location, std::vector<Node *> statements = {});
+
+        explicit CodeBlock(CodeBlock *node);
 
         node_t node_type() override;
     };

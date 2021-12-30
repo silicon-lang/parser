@@ -29,6 +29,9 @@ NumberLiteral::NumberLiteral(const string &location, string value) : Node{locati
     this->value = value;
 }
 
+NumberLiteral::NumberLiteral(NumberLiteral *node) : NumberLiteral{node->location, node->value} {
+}
+
 node_t NumberLiteral::node_type() {
     return node_t::NUMBER_LIT;
 }

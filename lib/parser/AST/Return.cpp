@@ -26,6 +26,8 @@ using namespace silicon::parser::AST;
 
 Return::Return(const string &location, Node *value) : Node{location}, value(MOVE(value)) {}
 
+Return::Return(Return *node) : Return{node->location, node->value} {}
+
 node_t Return::node_type() {
     return node_t::RETURN;
 }

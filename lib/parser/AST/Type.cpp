@@ -26,6 +26,8 @@ using namespace silicon::parser::AST;
 
 Type::Type(const string &location, string name) : Node{location}, name(MOVE(name)) {}
 
+Type::Type(Type *node) : Type{node->location, node->name} {}
+
 node_t Type::node_type() {
     return node_t::TYPE;
 }

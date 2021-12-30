@@ -24,6 +24,8 @@ using namespace silicon::parser::AST;
 
 Continue::Continue(const string &location) : Node{location} {}
 
+Continue::Continue(Continue *node) : Continue{node->location} {}
+
 node_t Continue::node_type() {
     return node_t::CONTINUE;
 }

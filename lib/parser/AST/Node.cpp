@@ -26,6 +26,9 @@ using namespace silicon::parser::AST;
 Node::Node(const string &location) : location(location) {
 }
 
+Node::Node(Node *node) : location(node->location) {
+}
+
 void Node::optimize() {
 }
 

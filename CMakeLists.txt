@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.19)
 
-project(SiliconParser VERSION 0.2.0 DESCRIPTION "Silicon Programming Language Parser")
+project(SiliconParser VERSION 0.3.0 DESCRIPTION "Silicon Programming Language Parser")
 
 set(CMAKE_CXX_STANDARD 20)
 
@@ -52,9 +52,11 @@ add_library(SiliconParser
         lib/parser/Parser.cpp
         lib/parser/Context.cpp
         lib/parser/AST/Node.cpp
+        lib/parser/AST/Type.cpp
         lib/parser/AST/CodeBlock.cpp
         lib/parser/AST/BooleanLiteral.cpp
         lib/parser/AST/NumberLiteral.cpp
+        lib/parser/AST/String.cpp
         lib/parser/AST/PlainObject.cpp
         lib/parser/AST/Interface.cpp
         lib/parser/AST/Variable.cpp

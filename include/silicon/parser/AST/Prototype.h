@@ -27,7 +27,7 @@
 
 namespace silicon::parser::AST {
 
-    class Prototype : public Node {
+    class Prototype : virtual public Node {
     public:
         std::string name;
         Node *return_type;
@@ -39,6 +39,8 @@ namespace silicon::parser::AST {
 
         Prototype(const std::string &location, std::string name, Node *return_type,
                   std::vector<std::pair<std::string, Node *>> arguments);
+
+        explicit Prototype(Prototype *node);
 
         node_t node_type() override;
 

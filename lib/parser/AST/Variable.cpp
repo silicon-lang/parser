@@ -27,6 +27,8 @@ using namespace silicon::parser::AST;
 Variable::Variable(const string &location, string name, Node *context) : Node{location}, name(MOVE(name)),
                                                                          context(MOVE(context)) {}
 
+Variable::Variable(Variable *node) : Variable{node->location, node->name, node->context} {}
+
 node_t Variable::node_type() {
     return node_t::VARIABLE;
 }

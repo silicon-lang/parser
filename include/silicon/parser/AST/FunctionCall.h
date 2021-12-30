@@ -27,12 +27,14 @@
 
 namespace silicon::parser::AST {
 
-    class FunctionCall : public Node {
+    class FunctionCall : virtual public Node {
     public:
         std::string callee;
         std::vector<Node *> args;
 
         FunctionCall(const std::string &location, std::string callee, std::vector<Node *> args);
+
+        explicit FunctionCall(FunctionCall *node);
 
         node_t node_type() override;
     };

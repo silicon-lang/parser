@@ -31,6 +31,8 @@ For::For(const string &location, Node *definition, Node *condition, Node *steppe
                                                                                                  stepper(MOVE(stepper)),
                                                                                                  body(MOVE(body)) {}
 
+For::For(For *node) : For{node->location, node->definition, node->condition, node->stepper, node->body} {}
+
 node_t For::node_type() {
     return node_t::FOR;
 }

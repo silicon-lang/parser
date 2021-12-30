@@ -24,9 +24,11 @@
 
 namespace silicon::parser::AST {
 
-    class Break : public Node {
+    class Break : virtual public Node {
     public:
         explicit Break(const std::string &location);
+
+        explicit Break(Break *node);
 
         node_t node_type() override;
     };

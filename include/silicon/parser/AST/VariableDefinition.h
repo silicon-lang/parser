@@ -25,12 +25,14 @@
 
 namespace silicon::parser::AST {
 
-    class VariableDefinition : public Node {
+    class VariableDefinition : virtual public Node {
     public:
         std::string name;
         Node *type;
 
         VariableDefinition(const std::string &location, std::string name, Node *type);
+
+        explicit VariableDefinition(VariableDefinition *node);
 
         node_t node_type() override;
     };

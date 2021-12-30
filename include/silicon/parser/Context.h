@@ -28,6 +28,7 @@
 #include "silicon/parser/AST/CodeBlock.h"
 #include "silicon/parser/AST/BooleanLiteral.h"
 #include "silicon/parser/AST/NumberLiteral.h"
+#include "silicon/parser/AST/String.h"
 #include "silicon/parser/AST/PlainObject.h"
 #include "silicon/parser/AST/Interface.h"
 #include "silicon/parser/AST/Variable.h"
@@ -53,6 +54,10 @@ namespace silicon::parser {
     protected:
         [[nodiscard]] std::string parse_location() const;
 
+        AST::Node *(*walker)(AST::Node *);
+
+        AST::Node *walk(AST::Node *node);
+
     public:
         const char *cursor{};
         yy::location location;
@@ -66,6 +71,8 @@ namespace silicon::parser {
         explicit Context(std::string &filename);
 
         void optimize(bool should_optimize = true);
+
+        void set_walker(AST::Node *(*walker)(AST::Node *));
 
         /* ------------------------- AST ------------------------- */
 
@@ -82,6 +89,10 @@ namespace silicon::parser {
         AST::Node *def_bool(bool value);
 
         AST::Node *def_num(std::string value);
+
+        /* ------------------------- AST -> String ------------------------- */
+
+        AST::Node *def_string(std::string value);
 
         /* ------------------------- AST -> Object & Interface ------------------------- */
 
@@ -120,14 +131,14 @@ namespace silicon::parser {
         AST::Node *def_while(AST::Node *condition, AST::Node *body);
 
         AST::Node *def_for(AST::Node *definition, AST::Node *condition,
-                           AST::Node *stepper, AST::Node *body);
+                   AST::Node *stepper, AST::Node *body);
 
         /* ------------------------- AST -> Function ------------------------- */
 
         static std::pair<std::string, AST::Node *> def_arg(std::string name, AST::Node *type);
 
         AST::Node *def_prototype(std::string name, std::vector<std::pair<std::string, AST::Node *>> arguments,
-                                 AST::Node *return_type);
+                         AST::Node *return_type);
 
         AST::Node *def_return(AST::Node * = nullptr);
 

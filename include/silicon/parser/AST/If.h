@@ -26,7 +26,7 @@
 
 namespace silicon::parser::AST {
 
-    class If : public Node {
+    class If : virtual public Node {
     public:
         Node *condition;
         Node *then_statements;
@@ -35,6 +35,8 @@ namespace silicon::parser::AST {
         bool is_inline = false;
 
         If(const std::string &location, Node *condition, Node *then_statements, Node *else_statements);
+
+        explicit If(If *node);
 
         node_t node_type() override;
 

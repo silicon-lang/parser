@@ -25,11 +25,13 @@
 
 namespace silicon::parser::AST {
 
-    class NumberLiteral : public Node {
+    class NumberLiteral : virtual public Node {
     public:
         std::string value;
 
         NumberLiteral(const std::string &location, std::string value);
+
+        explicit NumberLiteral(NumberLiteral *node);
 
         node_t node_type() override;
     };
